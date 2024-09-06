@@ -12,7 +12,7 @@ using WebAPI_MVC_ASR.Datos;
 namespace WebAPI_MVC_ASR.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240906160052_actualizacionTablas")]
+    [Migration("20240906204457_actualizacionTablas")]
     partial class actualizacionTablas
     {
         /// <inheritdoc />

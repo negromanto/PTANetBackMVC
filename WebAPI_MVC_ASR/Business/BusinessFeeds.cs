@@ -3,20 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI_MVC_ASR.Datos;
 using WebAPI_MVC_ASR.Models;
 using WebAPI_MVC_ASR.Models.DTOs;
+using WebAPI_MVC_ASR.Repository.IRepository;
 
 namespace WebAPI_MVC_ASR.Business
 {
     public class BusinessFeeds : IBusinessFeeds
     {
         private readonly ILogger<BusinessFeeds> logger;
-        private readonly ApplicationDbContext context;
+        private readonly IFeedRepository feedRepository;
+        //private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public BusinessFeeds(ILogger<BusinessFeeds> logger, ApplicationDbContext context, IMapper mapper)
+        public BusinessFeeds(ILogger<BusinessFeeds> logger, IFeedRepository feedRepository, IMapper mapper) 
         {
             this.logger = logger;
-            this.context = context;
+            this.feedRepository = feedRepository;
             this.mapper = mapper;
+
         }
 
         /// <summary>
@@ -27,15 +30,8 @@ namespace WebAPI_MVC_ASR.Business
         {
             logger.LogInformation("Bussiness: solicitud todos los Feeds");
             List<Feed> feeds;
-            try
-            {
-                feeds = await context.Feeds.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"Bussiness: Errro al consultar todos los registros, error: {ex.Message}");
-                return new List<FeedDTO>();
-            }
+
+            feeds = await feedRepository.GetAllAsync();
 
             return mapper.Map<IEnumerable<FeedDTO>>(feeds);
         }
@@ -49,7 +45,7 @@ namespace WebAPI_MVC_ASR.Business
         {
             logger.LogInformation($"Bussiness: consulta el registro con id: {id}");
 
-            Feed? feed = await context.Feeds.FirstOrDefaultAsync(x => x.Id == id);
+            Feed? feed = await feedRepository.GetAsync(x => x.Id == id);
 
             return mapper.Map<FeedDTO>(feed);
         }

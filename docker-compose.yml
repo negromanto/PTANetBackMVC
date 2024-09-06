@@ -1,0 +1,31 @@
+version: '3.4'
+
+
+networks:
+  asr:
+    name: micra
+
+services:
+  service-sql:
+    image: mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04 
+    environment: 
+    - ACCEPT_EULA=Y
+    - MSSQL_SA_PASSWORD=BDasr*123456 
+    ports:
+    - 1434:1433
+    restart: always 
+    container_name: sqlASR 
+    networks:
+    - asr
+
+  webapi_mvc_asr:
+    image: ${DOCKER_REGISTRY-}webapimvcasr
+    build:
+      context: .
+      dockerfile: WebAPI_MVC_ASR/Dockerfile
+    networks:
+    - asr
+    depends_on:
+    - service-sql
+   
+  

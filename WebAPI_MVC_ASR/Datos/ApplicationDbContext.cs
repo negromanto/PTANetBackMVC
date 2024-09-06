@@ -12,7 +12,7 @@ namespace WebAPI_MVC_ASR.Datos
         /// <param name="options"></param>
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-                
+               
         }
         public DbSet<Feed> Feeds { get; set; }
 

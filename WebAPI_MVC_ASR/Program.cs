@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using WebAPI_MVC_ASR;
 using WebAPI_MVC_ASR.Business;
 using WebAPI_MVC_ASR.Datos;
+using WebAPI_MVC_ASR.Repository;
+using WebAPI_MVC_ASR.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +18,17 @@ builder.Services.AddSwaggerGen();
 //Inyección de dependencias para utilizar AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+builder.Services.AddScoped<IBusinessFeeds, BusinessFeeds>();
+builder.Services.AddScoped<IFeedRepository, FeedRepository>();
+
 //Se pasa la cadena de conexión por inyección de dependencias
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultBD"));
+    string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultBD");
+    option.UseSqlServer(connectionString);
 });
 
-builder.Services.AddScoped<IBusinessFeeds, BusinessFeeds>();
+
 
 var app = builder.Build();
 
@@ -38,3 +44,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
