@@ -8,10 +8,19 @@ namespace WebAPI_MVC_ASR.Controllers
     [ApiController]
     public class FeedController : ControllerBase
     {
+        private readonly ILogger<FeedController> _logger;
+
+        public FeedController(ILogger<FeedController> logger)
+        {
+            _logger = logger;
+
+        }
+
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<FeedDTO>> GetAll()
         {
+            _logger.LogInformation("Se obtienen todas FEEDs");
             return Ok(new FeedDTO[0]);
         }
 
@@ -24,12 +33,15 @@ namespace WebAPI_MVC_ASR.Controllers
         {
             if (id == 0)
             {
+                _logger.LogError($"Se consulta un FEED por id:{id} pero este no es un valor valido");
                 return BadRequest();
             }
 
             //En caso de no encontrarlo
+            //_logger.LogError($"Se consulta un FEED por id:{id} pero este no fue encontrado");
             //return NotFound();
 
+            _logger.LogInformation($"Se obtiene un FEED por id:{id}");
             return Ok(new FeedDTO());
         }
     }
