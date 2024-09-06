@@ -21,7 +21,9 @@ namespace WebAPI_MVC_ASR.Controllers
         public ActionResult<IEnumerable<FeedDTO>> GetAll()
         {
             _logger.LogInformation("Se obtienen todas FEEDs");
-            return Ok(new FeedDTO[0]);
+
+
+            return Ok();
         }
 
 

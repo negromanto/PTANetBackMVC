@@ -15,5 +15,13 @@ namespace WebAPI_MVC_ASR.Datos
                 
         }
         public DbSet<Feed> Feeds { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Feed>().HasData(FeedStore.CreatesAllFeeds());
+        }
+
+
+        
     }
 }
