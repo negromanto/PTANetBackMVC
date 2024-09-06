@@ -5,6 +5,11 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI_MVC_ASR", "WebAPI_MVC_ASR\WebAPI_MVC_ASR.csproj", "{8181CC5F-072D-4C47-A32A-9D1AD18A054A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{CA42E427-6F89-4A6F-8221-18E3B07FC6CC}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose-database.yml = docker-compose-database.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
