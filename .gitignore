@@ -6,3 +6,8 @@
 /.vs/WebAPI_MVC_ASR/FileContentIndex
 /WebAPI_MVC_ASR/bin/Debug/net7.0
 /.vs/WebAPI_MVC_ASR
+/WebAPI_MVC_ASR.test/obj
+/bin/Debug
+/obj
+/TestProject1/obj
+/TestProject1/bin/Debug/net7.0
