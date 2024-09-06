@@ -2,6 +2,7 @@
 {
     public class FeedDTO
     {
+        public int Id { get; set; }
         public string? Timestamp { get; set; }
         public string? TimestampUTC { get; set; }
         public string? Country { get; set; }
