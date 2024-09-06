@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI_MVC_ASR.Business;
 using WebAPI_MVC_ASR.Models.DTOs;
 
 namespace WebAPI_MVC_ASR.Controllers
@@ -9,29 +10,32 @@ namespace WebAPI_MVC_ASR.Controllers
     public class FeedController : ControllerBase
     {
         private readonly ILogger<FeedController> _logger;
+        private readonly IBusinessFeeds businessFeeds;
 
-        public FeedController(ILogger<FeedController> logger)
+        public FeedController(ILogger<FeedController> logger, IBusinessFeeds businessFeeds)
         {
             _logger = logger;
+            this.businessFeeds = businessFeeds;
 
         }
 
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<FeedDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<FeedDTO>>> GetAll()
         {
             _logger.LogInformation("Se obtienen todas FEEDs");
 
+            var feeds = await businessFeeds.GetAll();
 
-            return Ok();
+            return Ok(feeds);
         }
 
 
-        [HttpGet("id:int")]
+        [HttpGet("id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<FeedDTO> GetOne(int id)
+        public async Task<ActionResult<FeedDTO>> GetOne(int id)
         {
             if (id == 0)
             {
@@ -39,12 +43,17 @@ namespace WebAPI_MVC_ASR.Controllers
                 return BadRequest();
             }
 
-            //En caso de no encontrarlo
-            //_logger.LogError($"Se consulta un FEED por id:{id} pero este no fue encontrado");
-            //return NotFound();
+            var feed = await businessFeeds.GetOne(id);
+
+            // En caso de no encontrarlo
+            if (feed == null)
+            {
+                _logger.LogError($"Se consulta un FEED por id:{id} pero este no fue encontrado");
+                return NotFound();
+            }
 
             _logger.LogInformation($"Se obtiene un FEED por id:{id}");
-            return Ok(new FeedDTO());
+            return Ok(feed);
         }
     }
 }

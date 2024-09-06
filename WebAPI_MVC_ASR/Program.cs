@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using WebAPI_MVC_ASR;
+using WebAPI_MVC_ASR.Business;
 using WebAPI_MVC_ASR.Datos;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +13,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Inyección de dependencias para utilizar AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+
 //Se pasa la cadena de conexión por inyección de dependencias
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultBD"));
 });
+
+builder.Services.AddScoped<IBusinessFeeds, BusinessFeeds>();
 
 var app = builder.Build();
 
